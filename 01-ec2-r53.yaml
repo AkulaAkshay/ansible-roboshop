@@ -21,10 +21,10 @@
 
     loop: "{{ instances }}"
     register: ec2_output
-    
+
   - name: printing the output
     ansible.builtin.debug:
-    msg: "{{ ec2_output }}" 
+     msg: "{{ ec2_output }}" 
 
 #------------------------------------------------just for testing purpose
 #   - name: printing the output
