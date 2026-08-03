@@ -1,0 +1,29 @@
+- name: create ec2 instance and update r53 record
+  hosts: local
+  connection: local
+  vars:
+    ami_id: ami-09c813fb71547fc4f # generally in shell scripting we use upper case, in ansible we use lower case while defining the variable . It is a general notion its up to us whether we follow it or not
+    sg_id: sg-0a6ae722a96642f1b
+    zone_id: Z02237942WL8S6DN4RI1T
+    domain_name: akshaysunny.space
+    instance:
+    - mongodb
+    
+  tasks:
+  - name: creating an ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      instance_type: t3.micro
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id }}"
+      tags:
+        name: "{{ item }}"
+
+      loop: "{{ instances }}"
+    register: ec2_output
+
+  - name: printing the output
+    ansible.builtin.debug:
+      msg: "{{ ec2_output }}"
+
+
