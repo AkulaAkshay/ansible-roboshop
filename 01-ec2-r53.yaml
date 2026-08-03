@@ -8,6 +8,7 @@
     domain_name: akshaysunny.space
     instances:
     - mongodb
+    - redis
 
     
   tasks:
