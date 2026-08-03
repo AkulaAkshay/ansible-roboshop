@@ -36,4 +36,5 @@
 
 
 #modules used --> package module, dnf module, copy module, replace module, service module, lineinfile module, etc..,
+#to replace the words-> use replace module; to replace the lines-> use lineinfile module
       
