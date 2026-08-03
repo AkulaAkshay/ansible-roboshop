@@ -8,9 +8,6 @@
     domain_name: akshaysunny.space
     instance:
     - mongodb
-    - mysql
-    - redis
-    - catalogue
     
   tasks:
   - name: creating an ec2 instance
