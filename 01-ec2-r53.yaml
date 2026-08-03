@@ -2,7 +2,7 @@
   hosts: local
   connection: local
   vars:
-    ami_id: ami-09c813fb71547fc4f # generally in shell scripting we use upper case, in ansible we use lower case while defining the variable . It is a general notion its up to us whether we follow it or not
+    ami_id: ami-0220d79f3f480ecf5 # generally in shell scripting we use upper case, in ansible we use lower case while defining the variable . It is a general notion its up to us whether we follow it or not
     sg_id: sg-0a6ae722a96642f1b
     zone_id: Z02237942WL8S6DN4RI1T
     domain_name: akshaysunny.space
