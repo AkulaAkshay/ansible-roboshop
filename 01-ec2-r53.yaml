@@ -6,7 +6,7 @@
     sg_id: sg-0a6ae722a96642f1b
     zone_id: Z02237942WL8S6DN4RI1T
     domain_name: akshaysunny.space
-    instance:
+    instances:
     - mongodb
     
   tasks:
@@ -19,8 +19,12 @@
       tags:
         name: "{{ item }}"
 
-    loop: "{{ instance }}"
+    loop: "{{ instances }}"
     register: ec2_output
+    
+  - name: printing the output
+    ansible.builtin.debug:
+    msg: "{{ ec2_output }}" 
 
 #------------------------------------------------just for testing purpose
 #   - name: printing the output
