@@ -31,6 +31,9 @@
       state: started
       enabled: yes
 
+  - name: setup root password
+    ansible.builtin.command: mysql_secure_installation --set-root-pass RoboShop@1
+
 
 
 #modules used --> package module, dnf module, copy module, replace module, service module, lineinfile module, etc..,
