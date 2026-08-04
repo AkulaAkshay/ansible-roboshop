@@ -64,7 +64,7 @@
     ansible.builtin.command: mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
     register: catalogue_output
 
-  # we will print the catalogue_output and then we will decide whether we should create db or db already existed.
+  # we will print the catalogue_output and then we will decide whether we should create db (if not created early) or ignore (if db already existed).
   - name: print catalogue output
     ansible.builtin.debug:
       msg: "The catalogue output is: {{ catalogue_output }}"
