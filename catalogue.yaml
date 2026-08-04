@@ -71,9 +71,9 @@
   #   register: catalogue_output
 
   # we will print the catalogue_output and then we will decide whether we should create db (if not created early) or ignore (if db already existed).
-  - name: print catalogue output
-    ansible.builtin.debug:
-      msg: "The catalogue output is: {{ catalogue_output }}"
+  # - name: print catalogue output
+  #   ansible.builtin.debug:
+  #     msg: "The catalogue output is: {{ catalogue_output }}"
 
   - name: load products into mongodb
     ansible.builtin.shell: mongosh --host mongodb.akshaysunny.space </app/db/master-data.js
