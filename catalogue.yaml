@@ -46,7 +46,7 @@
   - name: copying .service file
     ansible.builtin.copy:
       src: catalogue.service
-      dest: /etc/sysytemd/system/catalogue.service
+      dest: /etc/systemd/system/catalogue.service
 
 # we should do daemon reload, start and enable, but since we have dependecies on the database we will first do that configuration
 
