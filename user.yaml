@@ -39,7 +39,7 @@
 
   - name: Download the code
     ansible.builtin.get_url:
-      url: http://example.com/path/file.conf
+      url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
       dest: /tmp/user.zip
 
   - name: extract user application
