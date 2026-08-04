@@ -73,4 +73,8 @@
   # we will print the catalogue_output and then we will decide whether we should create db (if not created early) or ignore (if db already existed).
   - name: print catalogue output
     ansible.builtin.debug:
-      msg: "The catalogue output is: {{ catalogue_output.stdout.0.split('\n') }}"
+      msg: "The catalogue output is: {{ catalogue_output }}"
+
+  - name: load products into mongodb
+    ansible.builtin.shell: mongosh --host mongodb.akshaysunny.space
+    when catalogue_output.stdout < 0
