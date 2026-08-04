@@ -1,0 +1,24 @@
+- name: set up catalogue server
+  hosts: local
+  become: yes
+  tasks:
+  - name: disable default nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
+
+  - name: enable nodejs
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: install nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+  - name: Add application User
+    ansible.builtin.user:
+      name: roboshop
+      comment: roboshop system user
+      system: true #this means system user
+      shell: /sbin/nologin
+      home: /app 
+      
+# how does the idempotency check happens here? --> in linux,shell we should explicitly check whether user is present or not, we should create user only if dosen't exists. But in ansible by default it is idempotenet ansible handles this, hence ansible in background checks whether user exists or not and will only create only if user is not present

@@ -9,7 +9,8 @@
     # instances:
     # - mongodb
     # - rabbitmq
-    # instead of passing the names (mysql, cart,..) firstly, the doing push and pulling is a bit tedious task . so, we will pass the names as srguments in the command line itself by using "-e".
+    # instead of passing the names (mysql, cart,..) firstly, the doing push and pulling is a bit tedious task . so, we will pass the names as srguments in the command line itself by using "-e". 
+    #example: ---- -e "instances=['cart','user','catalogue']" --> should not provide any space inside list
 
     
   tasks:
