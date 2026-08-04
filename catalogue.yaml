@@ -66,5 +66,5 @@
 
   # we will print the catalogue_output and then we will decide whether we should create db or db already existed.
   - name: print catalogue output
-    ansible.builtin.degub:
+    ansible.builtin.debug:
       msg: "The catalogue output is: {{ catalogue_output }}"
