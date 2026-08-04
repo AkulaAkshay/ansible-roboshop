@@ -1,0 +1,64 @@
+- name: user set up
+  hosts: user.akshaysunny.space
+  become: yes
+  tasks:
+  - name: disabling default version of nodejs
+    ansible.builtin.command: dnf module disable nodejs -y
+  
+  - name: enable only required version of nodejs
+    ansible.builtin.command: dnf module enable nodejs:20 -y
+
+  - name: install nodejs
+    ansible.builtin.package:
+      name: nodejs
+      state: present
+
+  - name: create system user
+    ansible.builtin.user:
+      name: roboshop
+      comment: roboshop system user
+      system: true
+      shell: /sbin/nologin
+      home: /app
+
+  #Safe to remove directory, because 2nd time if we run it will download freshly. no error if does not exist
+  - name: remove directory
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
+  - name: create app directory
+    ansible.builtin.file:
+      path: /app
+      state: present
+
+  - name: Delete catalogue file
+    ansible.builtin.file:
+      path: /tmp/user.zip
+      state: absent
+
+  - name: Download the code
+    ansible.builtin.get_url:
+      url: http://example.com/path/file.conf
+      dest: /tmp/user.zip
+
+  - name: extract user application
+    ansible.builtin.unarchive:
+      src: /tmp/user.zip
+      dest: /app
+
+  - name: dependencies installation
+    community.general.npm:
+      #name: npm installation(if necessary we can provide - name is  just for readability nothing much)
+      path: /app
+
+  - name: copy the .service file to the location where it actually should be
+    ansible.builtin.copy:
+      scr: user.service
+      dest: /etc/systemd/system/user.service
+
+  - name: daemon reload enable and start
+    ansible.builtin.systemd_service:
+      state: started
+      enabled: yes
+      daemon_reload: true
