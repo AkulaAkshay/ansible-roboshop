@@ -39,4 +39,32 @@
       dest: /app 
       remote_src: yes
 
-  #- name: 
+  - name: install dependencied - npm install
+    community.general.npm:
+      path: /app/ 
+
+  - name: copying .service file
+    ansible.builtin.copy:
+      src: catalogue.service
+      dest: /etc/sysytemd/system/catalogue.service
+
+# we should do daemon reload, start and enable, but since we have dependecies on the database we will first do that configuration
+
+  - name: copy mongo repo
+    ansible.builtin.copy:
+      src: mongo.repo
+      dest: /etc/yum.repos.d/mongo.repo
+
+  - name: install mongodb client in order to acess to database
+    ansible.builtin.package:
+      name: mongodb-mongosh
+      state: present
+
+  - name: we should check if catalogue "products" are already present in the database or not
+    ansible.buitlin.command: mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+    register: catalogue_output
+
+  # we will print the catalogue_output and then we will decide whether we should create db or db already existed.
+  - name: print catalogue output
+    ansible.builtin.degub:
+      msg: "The catalogue output is: {{ catalogue_output }}"
