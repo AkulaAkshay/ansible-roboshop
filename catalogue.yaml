@@ -60,8 +60,13 @@
       name: mongodb-mongosh
       state: present
 
-  - name: we should check if catalogue "products" are already present in the database or not
-    ansible.builtin.command: mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+  # - name: we should check if catalogue "products" are already present in the database or not
+  #   ansible.builtin.command: mongosh mongodb.daws86s.fun --quiet --eval "db.getMongo().getDBNames().indexOf('catalogue')"
+  #   register: catalogue_output
+
+  - name: evaluate catalogue database
+    community.mongodb.mongodb_shell:
+      eval: db.getMongo().getDBNames().indexOf('catalogue')
     register: catalogue_output
 
   # we will print the catalogue_output and then we will decide whether we should create db (if not created early) or ignore (if db already existed).
