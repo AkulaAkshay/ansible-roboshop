@@ -20,5 +20,21 @@
       system: true #this means system user
       shell: /sbin/nologin
       home: /app 
-      
+
 # how does the idempotency check happens here? --> in linux,shell we should explicitly check whether user is present or not, we should create user only if dosen't exists. But in ansible by default it is idempotenet ansible handles this, hence ansible in background checks whether user exists or not and will only create only if user is not present
+  - name: create a directory if dosen't exists
+    ansible.builtin.file:
+      path: /app
+      state: directory
+      
+  - name: download DEV written code - catalogue application
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip
+      dest: /tmp/catalogue.zip 
+
+  - name: extract catalogue application - unzipping
+    ansible.builtin.unarchive:
+      src: /tmp/catalogue.zip
+      dest: /app 
+
+  #- name: 
