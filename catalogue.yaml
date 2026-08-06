@@ -35,7 +35,7 @@
       state: directory
       path: /app
 
-# above we deleted the /app directory and now we will delete catalogue.zip file
+# above we deleted the /app directory and now we will delete catalogue.zip file if present
   - name: delete catalogue.zip file
     ansible.builtin.file:
       state: absent
@@ -52,9 +52,9 @@
       dest: /app 
       remote_src: yes
 
-  - name: install dependencied - npm install
+  - name: install dependencies - npm install
     community.general.npm:
-      path: /app/ 
+      path: /app 
 
   - name: copying .service file
     ansible.builtin.copy:
@@ -68,7 +68,7 @@
       src: mongo.repo
       dest: /etc/yum.repos.d/mongo.repo
 
-  - name: install mongodb client in order to acess to database
+  - name: install mongodb client in order to acess the database
     ansible.builtin.package:
       name: mongodb-mongosh
       state: present
