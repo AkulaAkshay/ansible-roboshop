@@ -61,7 +61,7 @@
       src: catalogue.service
       dest: /etc/systemd/system/catalogue.service
 
-# we should do daemon reload, start and enable, but since we have dependecies on the database we will first do that configuration
+# we should do daemon reload, start and enable, but since we have dependecies on the database we will first do that configuration and then later on we eill do systemd setup
 
   - name: copy mongo repo
     ansible.builtin.copy:
