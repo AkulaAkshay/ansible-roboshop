@@ -84,7 +84,7 @@
   #   register: catalogue_output
 
   # we will print the catalogue_output and then we will decide whether we should create db (if not created early) or ignore (if db already existed).
-  # - name: print catalogue output
+  # - name: print the catalogue output
   #   ansible.builtin.debug:
   #     msg: "The catalogue output is: {{ catalogue_output }}"
 
