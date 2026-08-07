@@ -88,23 +88,4 @@
       daemon_reload: true
 
 
-  - name: install maven and mysql
-    ansible.builtin.dnf:
-      name: "{{ item }}"
-      state: presenr
-    loop:
-    - maven
-    - mysql
 
-  - name: import shipping data into mysql
-    community.mysql.mysql_db:
-      state: import
-      name: all
-      login_host: mysql.akshaysunny.space
-      login_user: root
-      login_password: RoboShop@1
-      target: "{{ item }}"
-    loop:
-    - /app/db/schema.sql
-    - /app/db/app-user.sql
-    - /app/db/master-data.sql
