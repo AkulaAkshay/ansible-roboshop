@@ -1,0 +1,97 @@
+- name: set up of shipping component
+  hosts: shipping.akshaysunny.space
+  become: yes
+  tasks:
+  - name: install maven
+    #ansible.builtin.package: --> we know that for sure we are using dnf(RHEL --> OS) for our servers hence why to provide package ? --> if we provide package then ansible will query with the server that which OS does the server uses and then server gives the os (gathering facts) and then ansible decides that it uses RHEL hence we should use dnf in backend. This is an extra step done by ansible (a bit time taken we might not notice that time latency but none the less its llatency), if we directly provide dnf then that extra step can be excluded.
+    ansible.builtin.dnf:
+      name: maven
+      state: present
+
+  - name: user add
+    ansible.builtin.user:
+      name: roboshop
+      comment: Roboshop System user
+      shell: /sbin/nologin
+      home: /app
+      system: true
+
+  - name: remove /app directory
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
+  - name: create /app directory
+    ansible.builtin.file:
+      path: /app
+      state: present
+
+  - name: Delete shipping.zip file
+    ansible.builtin.file:
+      file: /tmp/shipping.zip
+      state: absent
+
+  - name: download shipping application
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip
+      dest: /tmp/shipping.zip
+
+  - name: extract shipping application
+    ansible.builtin.unarchive:
+      src: /tmp/shipping.zip
+      dest: /app
+      remote_src: yes
+
+  - name: Install dependencies
+    ansible.builtin.command: mvn clean package #installing dependencies and building ; when we run mvn clean package then target folder will be created, in that target folder .jar file will be created
+    args:
+      chdir: /app
+
+  - name: move .jar file
+    ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar
+
+  - name: copy shipping service
+    ansible.builtin.copy:
+      src: shipping.service
+      dest: /etc/systemd/system/shipping.service
+
+# downloading mysql client inorder to connect to mysql server
+  - name: install mysql
+    ansible.builtin.dnf:
+      name: mysql
+      state: present
+
+# we have 3 file to load into sql database
+  - name: import shipping data into mysql #schema.sql
+    ansible.mysql.mysql_db:
+      state: import
+      name: all
+      login_host: mysql.akshaysunny.space
+      login_user: root
+      login_password: RoboShop@1
+      target: /app/db/schema.sql
+
+  - name: import shipping data into mysql #/app/db/app-user.sql
+    ansible.mysql.mysql_db:
+      state: import
+      name: all
+      login_host: mysql.akshaysunny.space
+      login_user: root
+      login_password: RoboShop@1
+      target: /app/db/app-user.sql
+
+  - name: import shipping data into mysql #/app/db/master-data.sql
+    ansible.mysql.mysql_db:
+      state: import
+      name: all
+      login_host: mysql.akshaysunny.space
+      login_user: root
+      login_password: RoboShop@1
+      target: /app/db/master-data.sql
+
+  - name: daemon reload, enable and start
+    ansible.builtin.systemd_service:
+      name: shipping
+      state: started
+      enabled: yes
+      daemon_reload: true
