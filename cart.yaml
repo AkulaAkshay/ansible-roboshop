@@ -52,7 +52,6 @@
 
   - name: download dependencies
     community.general.npm:
-      name: nodejs dependencies
       path: /app
 
   - name: copy the cart service
