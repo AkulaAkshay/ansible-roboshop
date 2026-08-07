@@ -15,4 +15,54 @@
 
   - name: add system user
     ansible.builtin.user:
-      
+      name: roboshop
+      comment: Roboshop System user
+      shell: /sbin/nologin
+      home: /app
+      system: true 
+
+#Safe to remove directory, because 2nd time when we run it will download freshly. it shows no error if does not exist
+  - name: remove /app directory
+    ansible.builtin.file:
+      path: /app
+      state: absent
+
+# creating /app directory
+  - name: creating /app directory
+    ansible.builtin.file:
+      path: /app
+      state: directory
+
+# deleting .zip file if present
+  - name: delete cart.zip file
+    ansible.builtin.file:
+      path: /app/cart.zip
+      state: absent
+
+  - name: download the code
+    ansible.builtin.get_url:
+      url: https://roboshop-artifacts.s3.amazonaws.com/cart-v3.zip
+      dest: /tmp/cart.zip
+
+  - name: unzip cart.zip file
+    ansible.builtin.unarchive:
+      src: foo.tgz
+      dest: /app
+      remote_src: yes
+
+  - name: download dependencies
+    community.general.npm:
+      name: nodejs dependencies
+      path: /app
+
+  - name: copy the cart service
+    ansible.builtin.copy:
+      src: cart.service
+      dest: /etc/systemd/system/cart.service
+
+  - name: daemon reload, enable and start
+    ansible.builtin.systemd_service:
+      name: cart.service
+      state: started
+      enabled: true
+      daemon_reload: true
