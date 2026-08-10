@@ -45,7 +45,7 @@
       dest: /etc/nginx/nginx.conf
 
   - name: restart nginx
-    ansible.builtin.systemd_service:
+    ansible.builtin.service:
       name: nginx
       enable: yes
       state: restarted # if you din't start then it will start now; if you already started then it will restart now.
