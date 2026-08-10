@@ -48,5 +48,5 @@
     ansible.builtin.systemd_service:
       name: nginx
       enable: yes
-      start: restarted # if you din't start then it will start now; if you already started then it will restart now.
+      state: restarted # if you din't start then it will start now; if you already started then it will restart now.
 
