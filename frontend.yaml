@@ -1,0 +1,5 @@
+- name: FE conf
+  hosts: frontend
+  become: yes
+  tasks:
+  - name: 

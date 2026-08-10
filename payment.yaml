@@ -37,7 +37,7 @@
   - name: download the code
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip 
-      dest_path: /tmp/payment.zip
+      dest: /tmp/payment.zip
 
   - name: unzip .zip file
     ansible.builtin.unarchive:
