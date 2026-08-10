@@ -1,11 +1,11 @@
-- name: user set up
-  hosts: user.akshaysunny.space
+- name: setup user server
+  hosts: user
   become: yes
   tasks:
-  - name: disabling default version of nodejs
+  - name: disable default nodejs
     ansible.builtin.command: dnf module disable nodejs -y
-  
-  - name: enable only required version of nodejs
+
+  - name: enable nodejs 20
     ansible.builtin.command: dnf module enable nodejs:20 -y
 
   - name: install nodejs
@@ -13,31 +13,30 @@
       name: nodejs
       state: present
 
-  - name: create system user
+  - name: create roboshop system user
     ansible.builtin.user:
       name: roboshop
-      comment: roboshop system user
+      comment: RoboShop System user
       system: true
       shell: /sbin/nologin
       home: /app
-
-  #Safe to remove directory, because 2nd time if we run it will download freshly. no error if does not exist
-  - name: remove directory
+  # Safe to remove directory, because 2nd time if we run it will download freshly. no error if does not exist
+  - name: remove app directory
     ansible.builtin.file:
       path: /app
       state: absent
 
   - name: create app directory
     ansible.builtin.file:
-      path: /app
       state: directory
+      path: /app
 
-  - name: Delete catalogue file
+  - name: Delete user file
     ansible.builtin.file:
       path: /tmp/user.zip
       state: absent
 
-  - name: Download the code
+  - name: download user application
     ansible.builtin.get_url:
       url: https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip
       dest: /tmp/user.zip
@@ -48,18 +47,19 @@
       dest: /app
       remote_src: yes
 
-  - name: dependencies installation
+  - name: install dependencies
     community.general.npm:
-      #name: npm installation(if necessary we can provide - name is  just for readability nothing much)
       path: /app
 
-  - name: copy the .service file to the location where it actually should be
+  - name: copy user service
     ansible.builtin.copy:
-      scr: user.service
+      src: user.service
       dest: /etc/systemd/system/user.service
 
   - name: daemon reload enable and start
     ansible.builtin.systemd_service:
+      name: user
+      enabled: true
       state: started
-      enabled: yes
       daemon_reload: true
+  
