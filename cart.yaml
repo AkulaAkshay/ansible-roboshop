@@ -8,12 +8,12 @@
   - name: enable only the required version
     ansible.builtin.command: dnf module enable nodejs:20 -y
 
-  - name: install 
+  - name: install nodejs
     ansible.builtin.package:
       name: nodejs
       state: present
 
-  - name: add system user
+  - name: create roboshop system user
     ansible.builtin.user:
       name: roboshop
       comment: Roboshop System user
