@@ -6,3 +6,7 @@
     ansible.builtin.dnf:
       name: nginx
       state: present
+
+#what is dynamic inventory? --> instead of providing the ipaddress statically in a file, we can pull the ipaddress dynamically from the aws - ansible dynamic inventory plugin. we will provide all the required parameters in a yaml file and instead of providing the static inventory file we will provide the dynamic inventory plugin to the ansible playbook to fetch the ipaddress and it will execute
+
+#ansible can connect to the aws dynamically to fetch the ipaddress using dynamic inventory inventory plugin (amazon.aws.aws_ec2), this helps in autoscaling kind of environment , where fetching the ipaddress statically is not possible
